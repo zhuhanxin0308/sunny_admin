@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 //网站后台菜单类
 namespace app\admin\controller;
-use app\admin\model\Menu;
+use app\admin\model\Menu as MMenu;
 class Menu extends Admin{
 //返回后台左侧菜单数据	
 	public function menu(){	
@@ -51,7 +51,7 @@ class Menu extends Admin{
 	public function addmenu(){
 		if($this->request->isPost()){
 			$post=$this->request->post();
-			$menu=new Menu;	
+			$menu=new MMenu;	
 			$res=$menu->where('parentId',$post['parentId'])->where(function ($query)use ($post){
 				$query->where('name',$post['name'])->whereOr('title',$post['title']);})->select();
 			if(count($res)==0){
