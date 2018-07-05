@@ -29,19 +29,19 @@ class Users extends Admin
 				if(!empty($data[0])){
 
 				}else{
-					return array('code'=>400,'error'=>$this->$error['400']);
+					return json(array('code'=>400,'error'=>$this->$error['400']));
 				}
 			}else{
-				return array('code'=>400,'error'=>$this->$error['400']);
+				return json(array('code'=>400,'error'=>$this->$error['400']));
 			}
 		}
 		else
 		{
 			if(empty($data)){
-				return array('code'=>400,'error'=>$this->$error['400']);
+				return json(array('code'=>400,'error'=>$this->$error['400']));
 			}
 			else if(strlen($data)>30){
-				return array('code'=>400,'error'=>$this->$error['400']);
+				return json(array('code'=>400,'error'=>$this->$error['400']));
 			}
 		}
 		

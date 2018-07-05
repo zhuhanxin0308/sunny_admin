@@ -26,7 +26,7 @@ class Web extends Admin{
 			MWeb::where('id',1)->update($put);
 			return json(array('code'=>200,'msg'=>'更新成功'));
 		}
-			return ['code'=>200,'msg'=>'获取成功','data'=>MWeb::where('id',1)->find()];
+			return json(['code'=>200,'msg'=>'获取成功','data'=>MWeb::where('id',1)->find()]);
 		
 	}
 	public function email(){
@@ -40,6 +40,6 @@ class Web extends Admin{
 			MEmail::where('id',1)->update($put);
 			return json(array('code'=>200,'msg'=>'更新成功'));
 		}
-		return ['code'=>200,'msg'=>'获取成功','data'=>MEmail::where('id',1)->find()];
+		return json(['code'=>200,'msg'=>'获取成功','data'=>MEmail::where('id',1)->find()]);
 	}	
 }

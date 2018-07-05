@@ -15,7 +15,7 @@ use app\admin\model\Menu;
 class Index extends Admin{
 	
 	public function index(){
-		return array('code'=>200,'msg'=>'登录成功','data'=>array('username'=>session('username')));
+		return json(array('code'=>200,'msg'=>'登录成功','data'=>array('username'=>session('username'))));
 	}
 	// 注销登陆
 	public function loginout(){

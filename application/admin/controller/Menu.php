@@ -16,10 +16,10 @@ class Menu extends Admin{
 	public function menu(){	
 		$arr=db('menu')->where('auth',session('role'))->where('parentId',0)->order('orders asc')->where('status',1)->select();
 		if(empty($arr)){
-			return ['code'=>400,'error'=>'请检查数据库'];
+			return json(['code'=>400,'error'=>'请检查数据库']);
 		}
 		$tmp=$this->getchildmenu($arr);
-		return ['code'=>200,'msg'=>'获取menu成功','data'=>$tmp];
+		return json(['code'=>200,'msg'=>'获取menu成功','data'=>$tmp]);
 	}
 	//封装方法
 	protected function getchildmenu($arr){
@@ -45,7 +45,7 @@ class Menu extends Admin{
 				array_push($data['parentId'], $v);
 			}
 		}	
-		return ['code'=>200,'data'=>$data,'msg'=>'获取成功'];
+		return json(['code'=>200,'data'=>$data,'msg'=>'获取成功']);
 	}
 	//添加菜单接口
 	public function addmenu(){
@@ -56,9 +56,9 @@ class Menu extends Admin{
 				$query->where('name',$post['name'])->whereOr('title',$post['title']);})->select();
 			if(count($res)==0){
 				$menu->data($post)->save();
-				return ['code'=>200,'msg'=>'添加成功'];
+				return json(['code'=>200,'msg'=>'添加成功']);
 			}else{
-				return ['code'=>400,'msg'=>'添加失败,存在相同的模块名或者菜单名'];
+				return json(['code'=>400,'msg'=>'添加失败,存在相同的模块名或者菜单名']);
 			}
 		}
 	}
@@ -82,7 +82,7 @@ class Menu extends Admin{
 				}
 			}	
 		}
-			return ['code'=>0,'msg'=>'获取成功','data'=>$tmp];
+			return json(['code'=>0,'msg'=>'获取成功','data'=>$tmp]);
 		}
 	}
 	//删除菜单接口
@@ -93,14 +93,14 @@ class Menu extends Admin{
 			foreach	($post as $key => $value){
 				$res=$menu->where('parentId',$value['id'])->find();
 				if(!empty($res)){
-					return ['code'=>400,'error'=>'请先删除子菜单'];
+					return json(['code'=>400,'error'=>'请先删除子菜单']);
 				}
 			}
 			foreach ($post as $key => $value) {
 				$menu->where('id',$value['id'])->delete();
 				
 			}
-			return ['code'=>200,'msg'=>'删除成功'];
+			return json(['code'=>200,'msg'=>'删除成功']);
 		}
 	}
 }

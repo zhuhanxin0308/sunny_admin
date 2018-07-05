@@ -42,16 +42,16 @@ class Admin extends Controller{
 				'old_password'	=> 'require|max:20|min:5|alphaDash'
 			]);
 			if(!$validate->check($put)){
-				return array('code'=>400,'error'=>$validate->getError());
+				return json(array('code'=>400,'error'=>$validate->getError()));
 			}
 			$old_password=$put['old_password'];
 			$password=$put['password'];
 			$passwordcode=MAdmin::where('id',session('uid'))->find();
 			if(password_verify($old_password,$passwordcode['password'])){
 				MAdmin::where('id',session('uid'))->update(['password'=>password_hash($password,PASSWORD_DEFAULT)]);
-				return array('code'=>200,'msg'=>'修改成功');
+				return json(array('code'=>200,'msg'=>'修改成功'));
 			}
-			return array('code'=>400,'msg'=>'旧密码不正确');
+			return json(array('code'=>400,'msg'=>'旧密码不正确'));
 			
 		}
 
