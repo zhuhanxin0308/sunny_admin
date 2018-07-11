@@ -16,17 +16,13 @@ use think\facade\Hook;
 // 加载基础文件
 
 require __DIR__ . '/../thinkphp/base.php';
+// 跨域 session共享需要的代码，如果你不用跨域可以忽略 代码开始 
 header("Access-Control-Allow-Credentials:true");
 header("Access-Control-Allow-Origin:http://192.168.194.138");
-header("Access-Control-Allow-Methods:*");
 header("Access-Control-Max-Age:3600");
 header("Access-Control-Allow-Headers:DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,SessionToken");
-
-//header('Access-Control-Allow-Origin: http://192.168.194.138');
-//header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-//header('Content-type:application/json');
-//header("Access-Control-Max-Age", "3600");
 header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
+//跨域session 共享 代码结束
 // 支持事先使用静态方法设置Request对象和Config对象
 // 执行应用并响应
 
