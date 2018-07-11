@@ -13,13 +13,17 @@ class Login extends Controller{
 		'411'	=>	'密码不正确',
 		'412'	=>	'请求方式不对'
 	];
+	public function notlogin(){
+		return json(array('code'=>10001,'msg'=>'尚未登录'));	
+		}
+
 	public function login(){
 		if($this->request->isPost()){
 			$post=$this->request->post();
 			//验证码正确性
 			if(!captcha_check($post['vercode']))
 			{
-				return json(array('code'=>400,'error'=>$this->error['410']));
+				return json(array('code'=>400,'msg'=>$this->error['410']));
 			}
 			//字段验证
 			$validate=new VAdmin;

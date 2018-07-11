@@ -19,7 +19,7 @@ class Admin extends Controller{
 		if(session('uid')?true:false){
 			
 		}else{
-			$this->error('没有登录',10001);	
+		$this->redirect('login/notlogin');	
 		}
 	}
 	//修改管理员信息
@@ -27,10 +27,10 @@ class Admin extends Controller{
 		if($this->request->isPut()){
 			$put=$this->request->put();
 			MAdmin::where('id',session('uid'))->update($put);
-			return array('code'=>200,'msg'=>'更新成功');
+			return json(array('code'=>200,'msg'=>'更新成功'));
 		}
 		$info=MAdmin::where('id',session('uid'))->find();
-		return array('code'=>200,'data'=>$info);
+		return json(array('code'=>200,'data'=>$info));
 	}
 
 	//修改密码

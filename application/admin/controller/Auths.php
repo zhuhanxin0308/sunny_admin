@@ -35,25 +35,7 @@ class Auths extends Admin{
 
 	public function auth($page=1,$limit=10){
 
-		//删除操作
-		if($this->request->isDelete()){
-			$del=$this->request->delete()['data'];
-			$this->check($del);
-			$dellist=[];
-			foreach ($del as $key => $value) {
-				$user=User::where('role',$value['id'])->find();
-				if($value['id']==1){
-					return json(array('code'=>400,'error'=>'此角色无法删除'));
-				}
-				if(count($user)>0){
-					return json(array('code'=>400,'error'=>'角色下有用户，删除失败'));
-				}
-				array_push($dellist, $value['id']);
-			}
-			//
-			Auth::destroy($dellist);
-			return json(array('code'=>200,'msg'=>'删除成功！'));
-		}
+		
 		//添加操作
 		if($this->request->isPost()){
 			$post=Request()->only('name');
@@ -65,8 +47,14 @@ class Auths extends Admin{
 			Auth::create($post);
 			return json(array('code'=>200,'msg'=>'添加成功'));
 		}
-		//更新操作
-		if($this->request->isPut()){
+		
+		//读取操作
+		$data=Auth::page($page)->limit($limit)->select();
+		$count=count(Auth::All());
+		return json(array('code'=>0,'data'=>$data,'msg'=>'rolelist','count'=>$count));
+	}
+	public function authedit(){
+		if($this->request->isPost()){
 			$put=Request()->only(['id','name']);
 			$this->check($put['id']);
 			if($put['id']==1){
@@ -84,10 +72,27 @@ class Auths extends Admin{
 			Auth::where('id',$put['id'])->update(['name'=>$put['name']]);
 			return json(array('code'=>200,'msg'=>'更新成功'));
 		}
-		//读取操作
-		$data=Auth::page($page)->limit($limit)->select();
-		$count=count(Auth::All());
-		return json(array('code'=>0,'data'=>$data,'msg'=>'rolelist','count'=>$count));
+	}
+	public function authdel(){
+		if($this->request->isPost()){
+			$del=$this->request->post()['data'];
+			$this->check($del);
+			$dellist=[];
+			foreach ($del as $key => $value) {
+				$user=User::where('role',$value['id'])->find();
+				if($value['id']==1){
+					return json(array('code'=>400,'error'=>'此角色无法删除'));
+				}
+				if(count($user)>0){
+					return json(array('code'=>400,'error'=>'角色下有用户，删除失败'));
+				}
+				array_push($dellist, $value['id']);
+			}
+			//
+			Auth::destroy($dellist);
+			return json(array('code'=>200,'msg'=>'删除成功！'));
+		}
+		
 	}
 	public function getAuthList(){
 		return json(array('code'=>200,'data'=>Auth::where('id','neq',1)->select()));

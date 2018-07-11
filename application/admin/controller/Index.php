@@ -61,8 +61,8 @@ class Index extends Admin{
 
 	//硬盘存储信息接口
 	public function memory(){
-		$total=disk_total_space("/");
-		$use=disk_free_space("/");
+		$total=disk_total_space("./");
+		$use=disk_free_space("./");
 		$arr=[];
 		$arr['cpu']=0;
 		$arr['memory']=(int)($use/$total*100);

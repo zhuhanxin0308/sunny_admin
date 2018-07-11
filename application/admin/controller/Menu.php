@@ -88,7 +88,7 @@ class Menu extends Admin{
 	//删除菜单接口
 	public function menudel(){
 		if($this->request->isPost()){
-			$menu=new Menu;
+			$menu=new MMenu;
 			$post=$this->request->post()['data'];
 			foreach	($post as $key => $value){
 				$res=$menu->where('parentId',$value['id'])->find();

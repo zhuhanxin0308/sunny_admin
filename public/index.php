@@ -13,21 +13,20 @@
 namespace think;
 use think\facade\Hook;
 
-//检查环境
-if((int)PHP_VERSION<7){
-	die("php 版本应大于等于7.0");
-}
-//检查权限
-$path="../../admin";
-if(!is_writable($path)){
-	die("目录权限不够，不可写");
-	
-}
 // 加载基础文件
+
 require __DIR__ . '/../thinkphp/base.php';
+header("Access-Control-Allow-Credentials:true");
+header("Access-Control-Allow-Origin:http://192.168.194.138");
+header("Access-Control-Allow-Methods:*");
+header("Access-Control-Max-Age:3600");
+header("Access-Control-Allow-Headers:DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,SessionToken");
 
-
-
+//header('Access-Control-Allow-Origin: http://192.168.194.138');
+//header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+//header('Content-type:application/json');
+//header("Access-Control-Max-Age", "3600");
+header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
 // 支持事先使用静态方法设置Request对象和Config对象
 // 执行应用并响应
 

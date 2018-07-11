@@ -47,7 +47,9 @@ class Users extends Admin
 		
 	}
 	public function user($page=1,$limit=10){
+	
 	//增
+
 		if($this->request->isPost()){
 			$validate=new VAdmin;
 			$post=Request()->only(['username','password','role']);
@@ -61,21 +63,27 @@ class Users extends Admin
 			User::create($post);
 			return json(array('code'=>200,'msg'=>'添加成功'));
 		}
-	//删
-		if($this->request->isDelete()){
-			$del=$this->request->delete()['data'];
-			$this->check($del);
-			$dellist=[];
-			foreach ($del as $key => $value) {
-				array_push($dellist, $value['id']);
+	
+		
+	//查
+		$res=User::All(function($query)use($page,$limit){
+				$query->page($page)->limit($limit);
+			});
+			foreach ($res as $key => $value) {
+				$value->auth;
 			}
-			//
-			User::destroy($dellist);
-			return json(array('code'=>200,'msg'=>'删除成功！'));
+			return json(array('code'=>0,'msg'=>'获取成功','data'=>$res,'count'=>count($res)));
+	}
+	public function userauth(){
+		if($this->request->isPost()){
+			User::where('id',$this->request->post()['id'])->update(['role'=>$this->request->post()['role']]);
+			return json(array('code'=>200,'msg'=>'更新成功'));
 		}
-	//改	
-		if($this->request->isPut()){
-			$data=Request()->only(['id','username','password']);
+	
+		
+	}
+	public function useredit(){
+		$data=Request()->only(['id','username','password']);
 			$validate=new VAdmin;
 			$result=$validate->check($data);
 			if(!$result){
@@ -89,15 +97,18 @@ class Users extends Admin
 			}
 			User::where('id',$data['id'])->update(['password'=>password_hash($data['password'],PASSWORD_DEFAULT)]);
 			return json(array('code'=>200,'msg'=>'更新成功'));
-		}
-	//查
-		$res=User::All(function($query)use($page,$limit){
-				$query->page($page)->limit($limit);
-			});
-			foreach ($res as $key => $value) {
-				$value->auth;
+	}
+	public function userdel(){
+		if($this->request->isPost())
+		$del=$this->request->post()['data'];
+			$this->check($del);
+			$dellist=[];
+			foreach ($del as $key => $value) {
+				array_push($dellist, $value['id']);
 			}
-			return json(array('code'=>0,'msg'=>'获取成功','data'=>$res,'count'=>count($res)));
+			//
+			User::destroy($dellist);
+			return json(array('code'=>200,'msg'=>'删除成功！'));
 	}
 
 }
