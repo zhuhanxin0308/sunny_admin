@@ -142,7 +142,7 @@ CREATE TABLE `blue_user` (
 -- ----------------------------
 -- Records of blue_user
 -- ----------------------------
-INSERT INTO `blue_user` VALUES ('1', 'blueange', 'blues', '$2y$10$8Umq6.Z02gJ0P8.Vh7yKO.0zLy5wgXVU5hwwl83efXZp6cxAySFqq', '2', '1525415008', '1525415008', '1', null, null, null, null, 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJq7Gq4ayicLLRdiatCsJNDuZh5SVUnyV3trO8IupqAkvUNRIGUCr1e21l1AwGcuUFy7iarg7TbBgGjA/0', 'oGSYL0cVRKnPUKFX4F8vRxdKgGEI', '15736950607');
+INSERT INTO `blue_user` VALUES ('1', 'blueange', 'blues', '$2y$10$8Umq6.Z02gJ0P8.Vh7yKO.0zLy5wgXVU5hwwl83efXZp6cxAySFqq', '2', '1525415008', '1525415008', '1', null, null, null, null, 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJq7Gq4ayicLLRdiatCsJNDuZh5SVUnyV3trO8IupqAkvUNRIGUCr1e21l1AwGcuUFy7iarg7TbBgGjA/0', 'oGSYL0cVRKnPUKFrere8vRxdKgGEI', '15500001111');
 
 -- ----------------------------
 -- Table structure for blue_web
