@@ -5,12 +5,16 @@
 让专业的人做专业的事
 
 ## 后台后端安装
-安装环境 php 版本大于等于5，6，建议用7+
+安装环境 php 版本大于等于5，6
 新建数据库
 导入blue.sql
 
 修改config/database.php 配置你的数据库
-
+修改public/index.php
+如果是前后端跨域
+请修改
+Access-Control-Allow-Origin
+将值设置成前端页面z所在的域名
 
 把项目放到你的接口服务器目录中（一般www下例如www/项目名字/[...]  或者直接放到www/[application ,config ...]）
 
@@ -23,6 +27,8 @@
 
 >开发时修改config/app.config  app_debug => true 开启调试模式
 >正式上线记得关闭调试模式 app_debug => false
+>注意前端开发请参考layui 开发手册，后端开发请参考thinkphp5.1开发手册
+>下面是tp5官网的部分内容
 ## 后台后端目录结构
 [参考thinkphp5.1开发手册]
 结构如下：
