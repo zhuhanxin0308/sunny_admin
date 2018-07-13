@@ -16,9 +16,9 @@ use think\facade\Hook;
 // 加载基础文件
 
 require __DIR__ . '/../thinkphp/base.php';
-// 跨域 session共享需要的代码，如果你不用跨域可以忽略 代码开始 
+// 跨域 session共享需要的代码， 
 header("Access-Control-Allow-Credentials:true");
-header("Access-Control-Allow-Origin:http://192.168.194.138");
+header("Access-Control-Allow-Origin:http://192.168.194.138");//注意修改这里 填写你的前端页面的域名
 header("Access-Control-Max-Age:3600");
 header("Access-Control-Allow-Headers:DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,SessionToken");
 header('Access-Control-Allow-Methods: GET, POST, PUT,DELETE');
