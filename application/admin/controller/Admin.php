@@ -24,8 +24,8 @@ class Admin extends Controller{
 	}
 	//修改管理员信息
 	public function info(){
-		if($this->request->isPut()){
-			$put=$this->request->put();
+		if($this->request->isPost()){
+			$put=$this->request->post();
 			MAdmin::where('id',session('uid'))->update($put);
 			return json(array('code'=>200,'msg'=>'更新成功'));
 		}
@@ -35,8 +35,8 @@ class Admin extends Controller{
 
 	//修改密码
 	public function password(){
-		if($this->request->isPut()){
-			$put=$this->request->put();
+		if($this->request->isPost()){
+			$put=$this->request->post();
 			$validate=new Validate([
 				'password'	=> 'require|max:20|min:5|alphaDash',
 				'old_password'	=> 'require|max:20|min:5|alphaDash'
