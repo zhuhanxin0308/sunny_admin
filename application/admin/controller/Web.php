@@ -16,8 +16,8 @@ use app\admin\model\Email as MEmail;
 use app\admin\validate\Email as VEmail;
 class Web extends Admin{
 	public function web(){
-		if($this->request->isPut()){
-			$put=$this->request->put();
+		if($this->request->isPost()){
+			$put=$this->request->post();
 			$validate=new VWeb;
 			$result=$validate->check($put);
 			if(!$result){
@@ -30,8 +30,8 @@ class Web extends Admin{
 		
 	}
 	public function email(){
-		if($this->request->isPut()){
-			$put=$this->request->put();
+		if($this->request->isPost()){
+			$put=$this->request->post();
 			$validate=new VEmail;
 			$result=$validate->check($put);
 			if(!$result){
