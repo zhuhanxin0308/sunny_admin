@@ -24,37 +24,25 @@ liunx
 默认配置文件为linux
 如下
 <pre>
-<IfModule mod_rewrite.c>
-  
+<IfModule mod_rewrite.c> 
 Options +FollowSymlinks -Multiviews
-
 RewriteEngine on
-
 RewriteCond %{REQUEST_FILENAME} !-d
-
 RewriteCond %{REQUEST_FILENAME} !-f
-
 RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
-
 </IfModule>
 </pre>
 
 window
-
+<pre>
 <IfModule mod_rewrite.c>
-  
-Options +FollowSymlinks -Multiviews
-  
+Options +FollowSymlinks -Multiviews 
 RewriteEngine on
-
 RewriteCond %{REQUEST_FILENAME} !-d
-  
-RewriteCond %{REQUEST_FILENAME} !-f
-  
+RewriteCond %{REQUEST_FILENAME} !-f 
 RewriteRule ^(.*)$ index.php?s=$1 [QSA,PT,L]
-
 </IfModule>
-
+</pre>
 至此环境配置完成了
 ##下面创建数据库
 新建数据库
