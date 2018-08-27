@@ -4,16 +4,50 @@
 实现前后端完全分离
 让专业的人做专业的事
 
-## 后台后端安装
-安装环境 php 版本大于等于5，6
+## 后台后端部署
+#首先你需要有一个php开发环境，满足以下要求
+》安装服务
+1，php 版本大于等于5，6
+2，mysql服务 。建议5.7以上版本
+3, httpd服务 ，建议apache2.4及其以上
+》配置服务
+开启apache rewrite等等更多配置参考tp手册
+>记得配置好环境后，修改public目录下的.haccess文件的重写规则
+liunx
+默认配置文件为linux
+如下
+
+<IfModule mod_rewrite.c>
+Options +FollowSymlinks -Multiviews
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+</IfModule>
+
+window
+
+<IfModule mod_rewrite.c>
+Options +FollowSymlinks -Multiviews
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?s=$1 [QSA,PT,L]
+</IfModule>
+
+至此环境配置完成了
+##下面创建数据库
 新建数据库
 导入blue.sql
+##接下来就是项目配置了，详情参考tp手册
 
 修改config/database.php 配置你的数据库
 修改public/index.php
 如果是前后端跨域
 请修改
-Access-Control-Allow-Origin
+Access-Control-Allow-Origin 这一项
 将值设置成前端页面z所在的域名
 
 把项目放到你的接口服务器目录中（一般www下例如www/项目名字/[...]  或者直接放到www/[application ,config ...]）
