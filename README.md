@@ -23,7 +23,7 @@
 liunx
 默认配置文件为linux
 如下
-
+<pre>
 <IfModule mod_rewrite.c>
   
 Options +FollowSymlinks -Multiviews
@@ -37,6 +37,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
 
 </IfModule>
+</pre>
 
 window
 
