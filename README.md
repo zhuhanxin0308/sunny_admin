@@ -20,7 +20,7 @@
 #开启apache rewrite等等更多配置参考tp手册
 
 >记得配置好环境后，修改public目录下的.haccess文件的重写规则
-liunx
+1>liunx
 默认配置文件为linux
 如下
 <pre>
@@ -33,7 +33,7 @@ RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
 </IfModule>
 </pre>
 
-window
+2>window
 <pre>
 <IfModule mod_rewrite.c>
 Options +FollowSymlinks -Multiviews 
