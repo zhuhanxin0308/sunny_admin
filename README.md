@@ -25,23 +25,33 @@ liunx
 如下
 
 <IfModule mod_rewrite.c>
+  
 Options +FollowSymlinks -Multiviews
+
 RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-d
+
 RewriteCond %{REQUEST_FILENAME} !-f
+
 RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+
 </IfModule>
 
 window
 
 <IfModule mod_rewrite.c>
+  
 Options +FollowSymlinks -Multiviews
+  
 RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-d
+  
 RewriteCond %{REQUEST_FILENAME} !-f
+  
 RewriteRule ^(.*)$ index.php?s=$1 [QSA,PT,L]
+
 </IfModule>
 
 至此环境配置完成了
