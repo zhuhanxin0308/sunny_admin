@@ -6,12 +6,19 @@
 
 ## 后台后端部署
 #首先你需要有一个php开发环境，满足以下要求
+
 》安装服务
+
 1，php 版本大于等于5，6
+
 2，mysql服务 。建议5.7以上版本
+
 3, httpd服务 ，建议apache2.4及其以上
+
 》配置服务
-开启apache rewrite等等更多配置参考tp手册
+
+#开启apache rewrite等等更多配置参考tp手册
+
 >记得配置好环境后，修改public目录下的.haccess文件的重写规则
 liunx
 默认配置文件为linux
