@@ -15,7 +15,7 @@
 
 return [
     // 应用名称
-    'app_name'               => '',
+    'app_name'               => 'web',
     // 应用地址
     'app_host'               => '',
     // 应用调试模式
@@ -136,5 +136,6 @@ return [
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
+   
 
 ];

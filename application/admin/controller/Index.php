@@ -11,7 +11,11 @@
 //这是后台首页的数据展示接口 //这里用的假数据 实际开发时按需要修改
 namespace app\admin\controller;
 use app\admin\model\User;
-use app\admin\model\Menu;
+use app\admin\model\BlogLog;
+use app\admin\model\Post;
+use app\admin\model\Cate;
+use app\admin\model\Comment;
+use think\Db;
 class Index extends Admin{
 	
 	public function index(){
@@ -32,23 +36,9 @@ class Index extends Admin{
 		if($this->request->isPost()){
 			
 			$arr=[];//用来存放所有的数据
-			$result=[];//用来存放菜单列表
-			$res=db('menu')->where('auth',session('role'))->where('name','neq','')->where('status',1)->where('parentId','neq',0)->select();
-			foreach ($res as $key => $value) {
-				$tmp=db('menu')->where('auth',session('role'))->where('status',1)->where('parentId',$value['id'])->select();
-				if(empty($tmp)){
-					$parent=db('menu')->where('id',$value['parentId'])->select();
-					if(!empty($parent)){
-						$value['parent']=$parent[0];
-						$pparent=db('menu')->where('id',$parent[0]['parentId'])->select();
-						if(!empty($pparent)){
-							$value['pparent']=$pparent[0];	
-						}
-					}
-					array_push($result, $value);
-				}
-			}		
-			$arr['quick']=$result;
+			
+			$menu=new Menu;
+			$arr['quick']=$menu->getQuickMenuList();
 			$arr['php_version']=PHP_VERSION;
 			$data['code']=200;
 			$data['msg']='获取成功';
@@ -75,68 +65,57 @@ class Index extends Admin{
 	public function tongji(){
 		//用户数量统计
 		$userCount=count(db('user')->select());
-		//微信用户统计
-		$wUserCount=1223;
-		//视频数量统计
-		$videoCount=3322;
-		//其他数量
-		$otherCount=5522;
+		//文章数量
+		$wUserCount=count(Post::where('status','neq',-1)->select());
+		//评论数量统计
+		$videoCount=count(Comment::where('status','neq',-1)->select());
+		//访客数量
+		$otherCount=count(Db::table('blue_blog_log')->distinct(true)->field('ip')->select());
 		$arr=[];
 		array_push($arr,['name'=>'用户数量','value'=>$userCount]);
-		array_push($arr,['name'=>'微信用户','value'=>$wUserCount]);
-		array_push($arr,['name'=>'视频数量','value'=>$videoCount]);
-		array_push($arr,['name'=>'其他数据','value'=>$otherCount]);
+		array_push($arr,['name'=>'文章数量','value'=>$wUserCount]);
+		array_push($arr,['name'=>'评论数量','value'=>$videoCount]);
+		array_push($arr,['name'=>'访客数据','value'=>$otherCount]);
 		return json(array('code'=>200,'msg'=>'获取成功','data'=>$arr));
 	}
 	//控制台 模拟数据接口
 	public function testdata(){
-		$arr=[
-				'data'	=>[
-					'one'	=> [1100,2220,3123,4363,2735,4946],
-					'two'	=> [292,1233,2124,2344,1144,3244],
-				]	
-			];
-		return json($arr);
+		$arr=[0,2,4,6,8,10,12,14,16,18,20,22];
+		$one=[];
+		$two=[];
+		
+		foreach ($arr as $key => $value) {
+			$one[$key]=count(BlogLog::where('create_time','>',strtotime('today')+$key*3600*2)->where('create_time','<=',strtotime('today')+($key+1)*3600*2)->select());
+			$two[$key]=count(Db::table('blue_blog_log')->distinct(true)->field('ip')->where('create_time','>',strtotime('today')+$key*3600*2)->where('create_time','<=',strtotime('today')+($key+1)*3600*2)->select());
+		}
+		$data['one']=$one;//ip
+		$data['two']=$two;//pv
+		return json(array('code'=>200,'msg'=>'获取成功','data'=>$data));
 	}
-	public function testdata3(){
-		$arr=[
-			'code'	=> 0,
-			'count'	=>3,
-			'data'	=>[[
-				'username'	=> '张三',
-				'create_time'	=>'1529658546054'
-			],[
-				'username'	=> '李四',
-				'create_time'	=>'1529658546054'
-			],[
-				'username'	=> '王五',
-				'create_time'	=>'1529658546054'
-			]]
-		];
-		return json($arr);
+	public function newcom(){
+		$res=Comment::where('status',1)->limit(10)->select();
+		if(count($res)==0){
+			return json(array('code'=>200,'msg'=>'没有数据','data'=>[],'count'=>0));
+		}
+		foreach ($res as $key => $value) {
+			$post=Post::where('id',$value['pid'])->select()[0];
+			$res[$key]['title']=$post->title;
+		}
+
+		return json(array('code'=>0,'msg'=>'最新十条评论','data'=>$res,'count'=>count($res)));
 	}
-	public function testdata2(){
-		$arr=[
-			'code'	=> 0,
-			'count'	=>3,
-			'data'	=>[[
-				'id'	=> '1',
-				'ques'	=> 'sunny后台管理系统开发框架今天发布',
-				'create_time'	=>'1529658546054'
-			],[
-				'id'	=>2,
-				'ques'	=> 'sunny后台管理系统开发框架今天发布',
-				'create_time'	=>'1529658546054'
-			],[
-				'id'	=>3,
-				'ques'	=> 'sunny后台管理系统开发框架今天发布',
-				'create_time'	=>'1529658546054'
-			]]
-		];
-		return json($arr);
+	public function newpublish(){
+		$res=Post::where('status',1)->limit(10)->select();
+		if(count($res)==0){
+			return json(array('code'=>200,'msg'=>'没有数据','count'=>0,'data'=>[]));
+		}
+		foreach ($res as $key => $value) {
+			$res[$key]['catename']=Cate::where('id',$value['cate'])->select()[0]['name'];
+		}
+		return json(array('code'=>0,'msg'=>'最新十条文章','data'=>$res,'count'=>count($res)));
 	}
 
-//清楚模板缓存
+//模板缓存
 protected function delDirAndFile($dir){
 
 	
@@ -165,6 +144,22 @@ public function clear(){
 	
 
 
+}
+//访客地图接口
+public function map(){
+	
+	if($this->request->isPost()){
+		$city=[
+            '北京','天津','上海','重庆','河北','山西','辽宁','吉林','黑龙江','江苏','浙江','安徽','福建','江西','山东','河南','湖北','湖南','广东','海南','四川','贵州','云南','陕西','甘肃','青海','台湾','内蒙古','广西','西藏','宁夏','新疆','香港','澳门'
+        ];
+        $data=[];
+		foreach ($city as $key => $value) {
+			$data[$key]['name']=$value;
+			$data[$key]['value']=count(BlogLog::where('create_time','>',strtotime("today"))->where('city',$value)->select());
+		}
+		return json(array('code'=>200,'msg'=>"获取成功",'data'=>$data));
+	
+	}
 }
 
 

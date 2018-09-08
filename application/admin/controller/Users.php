@@ -13,6 +13,7 @@ namespace app\admin\controller;
 use app\admin\model\Admin as MAdmin;
 use app\admin\validate\Admin as VAdmin;
 use app\admin\model\User;
+use app\admin\model\Log;
 /**
 *	网站用户类 
 */
@@ -50,33 +51,39 @@ class Users extends Admin
 	
 	//增
 
-		if($this->request->isPost()){
-			$validate=new VAdmin;
-			$post=Request()->only(['username','password','role']);
-			$result=$validate->check($post);
-			if(!$result){
-				return json(array('code'=>400,'error'=>$result));
-			}
-			if($post['role']==1){
-				return json(array('code'=>400,'error'=>$this->error['400']));
-			}
-			User::create($post);
-			return json(array('code'=>200,'msg'=>'添加成功'));
-		}
+		// if($this->request->isPost()){
+		// 	$validate=new VAdmin;
+		// 	$post=Request()->only(['username','password','role']);
+		// 	$result=$validate->check($post);
+		// 	if(!$result){
+		// 		return json(array('code'=>400,'error'=>$result));
+		// 	}
+		// 	if($post['role']==1){
+		// 		return json(array('code'=>400,'error'=>$this->error['400']));
+		// 	}
+		// 	User::create($post);
+		// 	$ip=$this->request->server()['REMOTE_ADDR'];
+		// 	Log::create(array('aid'=>session('uid'),'do'=>'增加用户（'.$post['username'].'）','ip'=>$ip));
+		// 	return json(array('code'=>200,'msg'=>'添加成功'));
+		// }
 	
 		
 	//查
-		$res=User::All(function($query)use($page,$limit){
-				$query->page($page)->limit($limit);
+			$count=User::count();
+		
+			$res=User::All(function($query)use($page,$limit){
+				$query->field(['id','username','nickName','role','create_time','gender'])->page($page)->limit($limit);
 			});
 			foreach ($res as $key => $value) {
 				$value->auth;
 			}
-			return json(array('code'=>0,'msg'=>'获取成功','data'=>$res,'count'=>count($res)));
+			return json(array('code'=>0,'msg'=>'获取成功','data'=>$res,'count'=>$count));
 	}
 	public function userauth(){
 		if($this->request->isPost()){
 			User::where('id',$this->request->post()['id'])->update(['role'=>$this->request->post()['role']]);
+			$ip=$this->request->server()['REMOTE_ADDR'];
+			Log::create(array('aid'=>session('uid'),'do'=>'更新用户权限（id='.$this->request->post()['id'].'）','ip'=>$ip));
 			return json(array('code'=>200,'msg'=>'更新成功'));
 		}
 	
@@ -96,18 +103,24 @@ class Users extends Admin
 				return json(array('code'=>400,'error'=>$this->error['400']));
 			}
 			User::where('id',$data['id'])->update(['password'=>password_hash($data['password'],PASSWORD_DEFAULT)]);
+			$ip=$this->request->server()['REMOTE_ADDR'];
+			Log::create(array('aid'=>session('uid'),'do'=>'修改用户信息（id='.$data['id'].'）','ip'=>$ip));
 			return json(array('code'=>200,'msg'=>'更新成功'));
 	}
 	public function userdel(){
 		if($this->request->isPost())
+			$log="";
 		$del=$this->request->post()['data'];
 			$this->check($del);
 			$dellist=[];
 			foreach ($del as $key => $value) {
 				array_push($dellist, $value['id']);
+				$log=$log."".$value['id'].",";
 			}
 			//
 			User::destroy($dellist);
+			$ip=$this->request->server()['REMOTE_ADDR'];
+			Log::create(array('aid'=>session('uid'),'do'=>'删除用户（id='.$log.'）','ip'=>$ip));
 			return json(array('code'=>200,'msg'=>'删除成功！'));
 	}
 

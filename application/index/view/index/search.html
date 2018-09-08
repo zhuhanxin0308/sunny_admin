@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{$keyword}的搜索结果{$web.title}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="{$web.keywords}">
+	<meta name="description" content="{$web.descript}">
+	<link rel="stylesheet" href="{$public}static/layui/css/layui.css">
+	<link rel="stylesheet" href="{$public}static/blog/css/mian.css">
+<script type="text/javascript">
+      var ROOT="{$public}";
+	</script>
+</head>
+<body class="lay-blog">
+		<div class="header">
+			<div class="header-wrap">
+				<h1 class="logo pull-left">
+					<a href="{$public}index/index/index.html">
+						<img src="{$public}static/blog/images/logo.png" alt="" class="logo-img">
+						<img src="{$public}static/blog/images/logo-text.png" alt="" class="logo-text">
+					</a>
+				</h1>
+				<form class="layui-form blog-seach pull-left" action="">
+					<div class="layui-form-item blog-sewrap">
+					    <div class="layui-input-block blog-sebox">
+					      <i class="layui-icon layui-icon-search"></i>
+					      <input type="text" name="keyword" lay-verify="title" autocomplete="off"  class="layui-input">
+					    </div>
+					</div>
+				</form>
+				<div class="blog-nav pull-right">
+					<ul class="layui-nav pull-left">
+					  <li class="layui-nav-item layui-this"><a href="{$public}index/index/index.html">首页</a></li>
+					 <!--  <li class="layui-nav-item"><a href="message.html">留言</a></li>
+					  <li class="layui-nav-item"><a href="about.html">关于</a></li> -->
+					</ul>
+					<a href="{$public}web/start" class="personal pull-left">
+						<i class="layui-icon layui-icon-username"></i>
+					</a>
+				</div>
+				<div class="mobile-nav pull-right" id="mobile-nav">
+					<a href="javascript:;">
+						<i class="layui-icon layui-icon-more"></i>
+					</a>
+				</div>
+			</div>
+			<ul class="pop-nav" id="pop-nav">
+				<li><a href="{$public}index/index/index.html">首页</a></li>
+				<!-- <li><a href="message.html">留言</a></li>
+				<li><a href="about.html">关于</a></li> -->
+			</ul>
+		</div>
+		<div class="container-wrap">
+			<div class="container">
+					<div class="contar-wrap" id="list">
+						<h4 class="item-title">
+							<p><i class="layui-icon layui-icon-speaker"></i>公告：<span>欢迎来到我的轻博客</span></p>
+						</h4>
+						{volist name="article" id="vo" empty="$isempty"}
+						<div class="item" style="max-height: 400px;overflow: hidden;">
+							<div class="item-box  layer-photos-demo1 layer-photos-demo">
+								<h3>
+									<a style="display: -webkit-box;max-height: 30.67px;-webkit-line-clamp: 1;-webkit-box-orient: vertical;overflow: hidden;" href="{$public}index/index/details.html?id={$vo.id}">{$vo.title}
+									</a>
+								</h3>
+								<h5>发布于：<span>{$vo.create_time}</span></h5>
+								<p style="display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;overflow: hidden;max-height: 84px;">
+									{$vo.content|strip_tags}
+
+								</p>
+								
+								<div class="layui-box">
+									评分	
+									<div id="test3" class="layui-inline">
+										<ul class="layui-rate">
+											{for start="0" end="floor($vo['rate'])"}
+
+											<li class="layui-inline">
+												<i class="layui-icon layui-icon-rate-solid"></i>
+											</li>
+											{/for}
+											{if $vo['rate']-floor($vo['rate'])!=0}
+											<li>
+												<i class="layui-icon layui-icon-rate-half"></i>
+											</li>
+											{for start="0" end="4-floor($vo['rate'])"}
+											<li class="layui-inline">
+												<i class="layui-icon layui-icon-rate"></i>
+											</li>
+											{/for}
+											{else/}	
+											{for start="0" end="5-(int)($vo['rate'])"}
+											<li class="layui-inline">
+												<i class="layui-icon layui-icon-rate"></i>
+											</li>
+											{/for}
+											{/if}
+											
+											
+							
+										</ul>
+									</div>{$vo.rate}分
+								</div>
+								</div>
+							
+							
+						</div>
+						{/volist}
+						<div id="page"></div>
+					
+			</div>
+		</div>
+		<div class="footer">
+			<p>
+				<span>{$web.copyright|raw}</span>
+				
+				<span>MIT license</span>
+			</p>
+			<p><span>人生就是一场修行</span></p>
+		</div>
+		<div style="display: none;">{$web.code|raw}</div>
+	
+	<script src="{$public}staitc/layui/layui.js"></script>
+	<script>
+		layui.config({
+		  base: '{$public}static/blog/js/' 
+		}).use(['blog','rate','laypage','jquery'],function(){
+			var rate=layui.rate,
+			blog=layui.blog,
+			laypage=layui.laypage,
+			$ = layui.jquery;
+			laypage.render({
+			  elem: 'page'
+			  ,count: {$total}//数据总数，从服务端得到
+			  ,curr:location.search.split('&')[2].split('=')[1]
+			  ,jump: function(obj, first){
+			    //obj包含了当前分页的所有参数，比如：
+			    console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+			    console.log(obj.limit); //得到每页显示的条数
+			    
+			    //首次不执行
+			    if(!first){
+			    	
+			      location.href="{$public}index/index/search?keyword={$keyword}&limit="+obj.limit+"&page="+obj.curr
+
+			    }
+			  }
+			});
+			
+		});	
+
+	</script>
+</body>
+</html>
+

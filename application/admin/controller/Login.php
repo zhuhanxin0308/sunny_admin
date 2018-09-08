@@ -4,6 +4,9 @@ use think\Controller;
 use think\captcha\Captcha;
 use app\admin\model\Admin as MAdmin;
 use app\admin\validate\Admin as VAdmin;
+use app\admin\model\Log;
+
+
 class Login extends Controller{
 	/*error code*/
 	private $error=[
@@ -19,6 +22,7 @@ class Login extends Controller{
 
 	public function login(){
 		if($this->request->isPost()){
+
 			$post=$this->request->post();
 			//验证码正确性
 			if(!captcha_check($post['vercode']))
@@ -40,6 +44,10 @@ class Login extends Controller{
 				session('username',$user[0]['username']);
 				session('role',$user[0]['role']);
 				session('uid',$user[0]['id']);
+				//记录系统日志
+				$ip=$this->request->server()['REMOTE_ADDR'];
+				Log::create(array('aid'=>session('uid'),'do'=>'登陆后台','ip'=>$ip));
+
 				return json(array('code'=>200,'msg'=>'登录成功'));
 			}else{
 				return json(array('code'=>400,'error'=>$this->error['411']));
@@ -49,7 +57,7 @@ class Login extends Controller{
 	}
 	public function captcha(){
 		$captcha=new Captcha([
-			'codeSet'	=>  '1234567890',
+			'codeSet'	=>  '1234567890abcdefghjkmnopqrstuvwxy',
 			'length'	=>	4,
 			'reset'		=>	true,
 			'imageH'	=>	40,
@@ -61,4 +69,5 @@ class Login extends Controller{
 		]);
 		return $captcha->entry();
 	}
+	
 }

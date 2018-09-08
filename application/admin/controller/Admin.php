@@ -33,6 +33,7 @@ class Admin extends Controller{
 		return json(array('code'=>200,'data'=>$info));
 	}
 
+
 	//修改密码
 	public function password(){
 		if($this->request->isPost()){
