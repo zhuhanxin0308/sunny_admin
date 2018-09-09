@@ -16,6 +16,24 @@
 8、 新增功能，当开启debug 时，即进入开发模式，可以更改设置后台菜单，当关闭debug时，将无法对菜单进行操作
 
 >  注意，  原有的数据库是用来支撑程序基本功能运行的必要条件，你可以在原来有的表上增加字段，或者增加表，切记不可删除原有字段，否则可能导致程序无法正常运行
+# 界面展示
+<img src="http://mymyjd.cn/images/1.png" style="width:100%;"><br>
+<img src="http://mymyjd.cn/images/2.png" style="width:100%;"><br>
+<img src="http://mymyjd.cn/images/3.png" style="width:100%;"><br>
+
+# 演示地址
+<a href="http://mymyjd.cn/demo/public/web/start">后台演示</a><br>
+<a href="http://mymyjd.cn/demo/publict">前台极简博客demo演示</a><br>
+# 官方网站
+<a href="http://sunny.mymyjd.cn/">sunny前后台分离式 后台管理系统开发框架</a><br>
+# qq讨论群组
+<a href="http://shang.qq.com/wpa/qunwpa?idkey=66812d96988dced770311f01758fc942fd495078a250b1c59d37da2938232eef" >点我加群</a>
+# 社区支持
+<a href="http://bbs.mymyjd.cn">盟友基地社区</a><br>
+# 作者博客
+<a href="http://blues.mymyjd.cn/">作者博客</a><br>
+# 其他网站
+<a href="http://mymyjd.cn/res">资源库</a><br>
 
 # sunny1.0
 一个开源的、前后端分离的、后台管理系统开发框架--后端基于thinkphp5.1，前端在这里只是演示使用的layui，事实上你可以使用任何技术搭建前端如（vue ，react ，甚至bootstrap 等），前后端交互全部基于接口
